@@ -14,36 +14,35 @@ const NewTask = (props) => {
       const response = await fetch(
         'https://add-tasks-a5e73-default-rtdb.europe-west1.firebasedatabase.app/tasks.json',
         {
-          method: 'POST',
-          body: JSON.stringify({ text: taskText }),
-          headers: {
+            method: 'POST',
+            body: JSON.stringify({ text: taskText }),
+            headers: {
             'Content-Type': 'application/json',
-          },
+            },
         }
       );
 
       if (!response.ok) {
-        throw new Error('Request failed!');
+         throw new Error('Request failed!');
       }
+      
+         const data = await response.json();
+         const generatedId = data.name; // firebase-specific => "name" contains generated id
+         const createdTask = { id: generatedId, text: taskText };
 
-      const data = await response.json();
-
-      const generatedId = data.name; // firebase-specific => "name" contains generated id
-      const createdTask = { id: generatedId, text: taskText };
-
-      props.onAddTask(createdTask);
-    } catch (err) {
-      setError(err.message || 'Something went wrong!');
-    }
-    setIsLoading(false);
+         props.onAddTask(createdTask);
+      } catch (err) {
+         setError(err.message || 'Something went wrong!');
+      }
+         setIsLoading(false);
   };
 
-  return (
-    <Section>
-      <TaskForm onEnterTask={enterTaskHandler} loading={isLoading} />
-      {error && <p>{error}</p>}
-    </Section>
-  );
+   return (
+      <Section>
+         <TaskForm onEnterTask={enterTaskHandler} loading={isLoading} />
+         {error && <p>{error}</p>}
+      </Section>
+   );
 };
 
 export default NewTask;
