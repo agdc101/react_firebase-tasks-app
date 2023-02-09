@@ -30,7 +30,7 @@ const useHttp = () => {
     }, []);
 
     return {
-        isLoading, // same as "isLoading: isLoading" nice JS feature
+        isLoading, // same as "isLoading: isLoading" nice JS feature.
         error,
         sendRequest
     };
